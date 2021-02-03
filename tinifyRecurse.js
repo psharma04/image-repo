@@ -39,8 +39,6 @@ for(var i in imgArrLimit) { // We sort through all the files from the imgArrLimi
     source.toFile(imgArrLimit[i]);
 }
 
-// To find out the number of images on your site, uncomment the line below:
-console.log(imgArr.length);
 
 // Round 2 (images 500-1000)
 var fs = require('fs');
