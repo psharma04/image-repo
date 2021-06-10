@@ -1,0 +1,15 @@
+graph TD
+    A[Unknown Anion]-->|Test with red litmus paper|B(Stays red) & C(Turns blue)
+    B-->|Add Barium Nitrate|D(White ppt) & E(No ppt)
+    D-->id1[Sulfate ions]
+    E-->|Add Silver Nitrate|F(White ppt) & G(Yellow ppt)
+    F-->id2[Chloride ions]
+    G-->|Add Lead Nitrate|H(White ppt) & I(Yellow ppt)
+    H-->id3[Bromide ions]
+    I-->id4[Iodide ions]
+    C-->|Add Hydrogen Nitrate|J(Bubbles) & K(No bubbles)
+    J-->id5[Carbonate ions]
+    K-->|"Add Iron (III) Nitrate"|L(No ppt) & M(Pink ppt) & N(Brown ppt)
+    L-->id6[Acetate ions]
+    M-->id7[Phosphate ions]
+    N-->id8[Hydroxide ions]
