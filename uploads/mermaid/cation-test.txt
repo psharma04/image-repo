@@ -1,0 +1,14 @@
+graph TD
+    A[Unknown Cation]-->|Add dilute HCl|B(White Precipitate) & C(No Precipitate)
+    B-->|Add Dilute Ammonia to new sample|D(Brown Precipitate) & E(White Precipitate)
+    D-->F[Silver ions]
+    E-->G["Lead (II) ions"]
+    C-->|Add Dilute Ammonia to new sample|H(White Precipitate) & I(Green Precipitate) & J(Brown Precipitate) & K(Blue Precipitate) & L(No precipitate)
+    H-->id1["Aluminium ions"]
+    I-->id2["Iron (II) ions"]
+    J-->id3["Iron (III) ions"]
+    K-->id4["Copper (II) ions"]
+    L-->|Flame test|M(No colour) & N(Red flame) & O(Yellow-green flame)
+    M-->id5[Ammonium ions]-->|Add dilute NaOH|P(smell of ammonia for confirmation)
+    N-->id6[Calcium ions]
+    O-->id7[Barium ions]
