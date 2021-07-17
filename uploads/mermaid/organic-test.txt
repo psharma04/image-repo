@@ -1,0 +1,12 @@
+graph TD
+    A[Unknown Organic Compound] -->|Add Sodium Hydrogen Carbonate| B(Bubbles) & C(No Reaction)
+    B-->id1[Carboxylic Acid]
+    C -->|Add Sodium to a dry sample|D(Bubbles) & E(No Reaction)
+    D -->|NO NEW SAMPLE, Add Permanganate|F(No Reaction) & G(Decolourisation)
+    F-->id2[Tertiary Alcohol]
+    G-->|Blue Litmus|H(Turns Red) & I(Stays Blue)
+    H-->id3[Primary Alcohol]
+    I-->id4[Secondary Alcohol]
+    E-->|Add Bromine Water|J(Decolourisation) & K(No Reaction)
+    J-->id5[Alkene/Alkyne]
+    K-->id6[Alkane]
