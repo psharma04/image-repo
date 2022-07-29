@@ -1,0 +1,349 @@
+---
+title: "MATH1041 Assignment Appendix A"
+output: 
+  html_notebook: 
+    toc: yes
+---
+
+## Rationale of this document
+
+This notebook contains the code used for the submitted MATH1041 Assignment by Pranav Sharma (z5418973), with the intent of presenting the RStudio code used in a manner accessible to the marker.
+
+## General Code
+
+This section is for environment options and steps that are fundamental to the entire task.
+
+```{r}
+options(digits=10)
+dataset <- read.table("5418973.txt",header=TRUE,stringsAsFactors=TRUE)
+```
+
+## Question 1
+
+### Part A
+
+The sample mean $(\bar{x})$ of ATARs in the dataset can be calculated by using the `mean` command of R, with the removal of NA values (`na.rm`) parameter set to TRUE, as follows
+
+```{r}
+atar.mean <- mean(dataset$ATAR,na.rm=TRUE)
+atar.mean
+```
+
+This corresponds with the provided sample mean, so the correct dataset is being used.
+
+In a similar manner, the standard deviation can be calculated using the `sd` command, with `na.rm` set to TRUE, as follows
+
+```{r}
+atar.sd <- sd(dataset$ATAR,na.rm=TRUE)
+atar.sd
+```
+
+Therefore, the standard deviation of the ATARs in the dataset is 15.70 (to 2 decimal places).
+
+### Part B
+
+Given Daniel's ATAR $\left(x_{D}=89\right)$, and the mean and Standard Deviation from part A,
+
+```{r}
+daniel.atar.zscore <- (89-atar.mean)/atar.sd
+daniel.atar.zscore
+```
+
+This means that Daniel's ATAR was 0.33 standard deviations above the mean of the class.
+
+### Part C
+
+Before computing any numerical summary, Daniel should have verified that the values in the dataset were valid. For example, the lowest reported ATAR is 30, with lower ranks being reported as "lower than 30" (`NA` for the purposes of this analysis). However, several datapoints are present with numerical values below 30.
+
+Additionally, he should have verified that the data is actually normally distributed, as z-scores are only a meaningful metric if a dataset is normal. This could be achieved through visual means (such as a QQ plot), or through a statistical test such as the Shapiro-Wilk test.
+
+### Part D
+
+This data was taken from a survey of a class of second-year biology students rather than a random sample of the entire university. As such, the conclusions drawn from it can only be stated for that class of second year biology students, not the entire university. What the graph actually shows is that the most common living arrangement for BIOL251 students in that class during COVID was living with parents. For Daniel's claim to be true, a survey of the entire university would need to be conducted and analysed in this manner.
+
+### Part E
+
+```{r}
+# Determine the total number of male and female participants
+## There were no `O` or `NA` responses for the `gender` column.
+totalM.1e <- sum(dataset$gender == "M")
+totalF.1e <- sum(dataset$gender == "F")
+
+# Find the percentage of all x who affiliate with y orientation
+## For example, percentFLib is the percentage of all Females who affiliate with the `Liberal` orientation
+percentFLib <- sum((dataset$gender=="F" & dataset$politorient == 1), na.rm=TRUE)/totalF.1e * 100
+percentFLab <- sum((dataset$gender=="F" & dataset$politorient == 2), na.rm=TRUE)/totalF.1e * 100
+percentFOth <- sum((dataset$gender=="F" & dataset$politorient == 3), na.rm=TRUE)/totalF.1e * 100
+percentMLib <- sum((dataset$gender=="M" & dataset$politorient == 1), na.rm=TRUE)/totalM.1e * 100
+percentMLab <- sum((dataset$gender=="M" & dataset$politorient == 2), na.rm=TRUE)/totalM.1e * 100
+percentMOth <- sum((dataset$gender=="M" & dataset$politorient == 3), na.rm=TRUE)/totalM.1e * 100
+
+# Convert individual variables to a table by creating a matrix with 2 columns.
+tab <- matrix(c(percentMLib, percentFLib,percentMLab, percentFLab, percentMOth, percentFOth), ncol=2, byrow=TRUE)
+
+tab <- as.table(tab)
+
+barplot(tab, main="Percentage of BIOL251 Students' Political Affiliations by Gender",
+        names.arg = c("Male", "Female"), # Set section names
+        col=c("#1C4F9C","#E51636","#CCCCCC"), # Set colour
+        beside=TRUE, # Avoid stacking columns
+        xlab="Political Affiliation", # Label for x-axis
+        ylab="Percentage of Gender Population", # Label for y-axis
+        legend.text=c("Liberal", "Labor", "Other"), # Labels for the legend
+        ylim=c(0,50), # Force y-axis to a height of 50 (without this, the graph stops at 40, cutting off one of the values)
+        args.legend=list(x = "topright",inset = c(-0.07, 0))) # Set position of the legend
+```
+
+### Part F
+
+Within the BIOL251 class, there is a stronger affiliation towards the Labor party among females when compared to males (about 17% more females in the class affiliate with Labor). By contrast, there is a strong favouring of alternative parties among males (approximately 42%), while around a third of females affiliate with alternative parties.
+
+## Question 2
+
+### Part A
+
+The explanatory variable is the type of high school attended by the student. This is a categorical/qualitative variable.
+
+### Part B
+
+The response variable is the WAM of the student. This is a continuous numerical variable.
+
+### Part C
+
+This is an observational study, as the response variable data was collected without the explanatory variable being manipulated by the researchers.
+
+### Part D
+
+```{r}
+boxplot(dataset$WAM~dataset$highschool, dataset,
+        main="WAM by type of high school",
+        xlab="High School Type",
+        ylab="WAM",
+        col=c("blue","red","orange","purple"),
+        names=c("Australian \n Public School","Australian \n Private School","Australian \n Selective School","Non-Australian \n High School"))
+
+
+```
+
+### Part E
+
+The median WAM of students that graduated from Australian selective schools is significantly higher than the medians of the other 3 categories. By contrast, Australian public and private school graduates have extremely similar median WAMs, although the distribution of WAMs is much greater for public schools than that of private schools, as shown by the respective sizes of their interquartile ranges. Non-Australian high school students appear to consistently perform worse than their Australian counterparts, with the median falling below even the lower quartiles of the other 3 categories. Additionally, the distribution of WAMs is significantly larger for non-australian high schools than any of the 3 domestic counterparts.
+
+### Part F
+
+A potential confounding variable for the exploration of WAM by type of school is whether or not international students learned English as a first language. For domestic students in Australia, there is a required level of English competency in order to graduate high school. However, countries which do not use English with frequency (China, Germany, India, etc.) likely do not require a demonstration of English competency to complete schooling (this is the correlation to the independent variable). Since content for courses at an Australian university are taught almost exclusively in English, the impact of the language barrier from not having a pre-requisite knowledge of English may prevent some international students from being able to learn content as easily as their domestic counterparts (this is the causal relation to the dependent variable).
+
+## Question 3
+
+### Part A
+
+```{r}
+plot(dataset$ATAR,dataset$WAM)
+```
+
+There are several significant outliers in the data, where the ATAR is extremely low with respect to the WAM. These values should be removed, as they are outliers and likely the result of incorrect submissions.
+
+```{r}
+## Find outliers for ATAR
+outliers <- boxplot(dataset$ATAR, plot = FALSE)$out
+
+# Remove identified values
+## `dataset.clean` is the new dataset
+dataset.clean <- dataset[-which(dataset$ATAR %in% outliers),]
+
+
+## Verify that outliers were removed
+mean(dataset.clean$WAM)
+sd(dataset.clean$WAM)
+
+# Plot the new graphical summary
+plot(dataset.clean$ATAR,dataset.clean$WAM,
+     main="Scatterplot comparing WAM and ATAR",
+     xlab="ATAR",
+     ylab="WAM",
+     axes=TRUE)
+## Add trend line
+abline(lsfit(dataset.clean$ATAR,dataset.clean$WAM)$coefficients)
+```
+
+### Part B
+
+The association between the variables appears linear, with a positive association. There are no significant outliers, and the association between the metrics appears to be moderate.
+
+```{r}
+lsfit(dataset.clean$ATAR,dataset.clean$WAM)$coefficients
+```
+
+The intercept of the trendline is 23.8486407, and the gradient is 0.5740167.
+
+### Part C
+
+```{r}
+cor(dataset.clean$ATAR,dataset.clean$WAM, use="complete.obs")
+```
+
+The correlation coefficient is 0.6047675141.
+
+### Part D
+
+The correlation coefficient is a metric between -1 and 1, which is calculated as the ratio between the covariance of the two variables and the product of their standard deviations. It represents the extent to which a change in variable $x$ should correlate with a change in $y$. A larger absolute value of $r$ indicates a stronger correlation between the variables. A correlation coefficient of approximately 0.6 is considered a moderate correlation.
+
+### Part E
+
+```{r}
+lsfit(dataset.clean$ATAR,dataset.clean$WAM)$coefficients[2]*89 + lsfit(dataset.clean$ATAR,dataset.clean$WAM)$coefficients[1]
+```
+
+Given the intercept and gradient calculated in part B, and the ATAR given in the question, Daniel's predicted WAM is 74.93612554.
+
+### Part F
+
+The residual of Daniel's ATAR and WAM can be calculated by
+
+```{r}
+70-74.93612554
+```
+
+### Part G
+
+The WAM that Daniel received was 4.94 marks lower than the WAM that he would be expected to receive based on his ATAR.
+
+## Question 4
+
+### Part A
+
+As this data follows a t-distribution, the following R code can be used to determine the confidence interval:
+
+```{r}
+# Find the mean, sd, and count of WAMs from the known data
+wam.mean <- mean(dataset$WAM, na.rm=TRUE)
+wam.sd <- sd(dataset$WAM, na.rm=TRUE)
+wam.count = sum(dataset$WAM > -1) # As a negative WAM is impossible, this is a (probably inefficient, but successful) way of determining the number of items.
+
+### The `dataset$WAM > -1` component will return a boolean for each value of `dataset$WAM`. As `sum` treats `TRUE` as 1 and `FALSE` as 0, and every value should return `TRUE`, `wam.count` will be equal to the number of items in `dataset$WAM`.
+
+## Enter the Confidence Interval as a decimal
+CI = 0.95
+# Calculate the degrees of freedom, standard error, t*, and margin of error
+## Degrees of Freedom = count - 1
+df = wam.count-1
+
+## Standard Error = sd/sqrt(n)
+SE=wam.sd/sqrt(wam.count)
+
+## T-Star needs to be computed using the Quantile T Function
+tstar=qt((1-CI)/2,df,lower.tail=FALSE);
+## Margin of Error = T-star * Standard Error
+MOE = tstar*SE
+# Calculate the CI
+## Limits of the CI are the mean ± the margin of error
+LowerLimit_CI = wam.mean - MOE
+UpperLimit_CI = wam.mean + MOE
+
+# Print the calculated values to Console
+LowerLimit_CI
+UpperLimit_CI
+```
+
+This script results in an output of 70.99171975 for the lower limit, and 73.7530466 for the upper limit.
+
+### Part B
+
+No. As non-responses and similar logistical challenges were not counted when calculating information such as the degrees of freedom or standard error, the margin of error did not consider these either.
+
+### Part C
+
+The statement is inaccurate because the sample used is not representative of the entire university, only that specific BIOL251 class. Additionally, as established in part B, the fact that not every individual in the class responded means that the confidence interval is based on a sample rather than the entire population, and is therefore not even fully representative of the class from which all its datapoints were derived.
+
+## Question 5
+
+### Part A
+
+```{r}
+qqnorm(dataset$stress,
+       main = "Normal Quantile Plot of the sample of stress values during COVID",
+       xlab = "Theoretical Stress Value",
+       ylab = "Observed Stress Value")
+qqline(dataset$stress)
+```
+
+### Part B
+
+There is a significant deviation from the correlation line at higher and lower stress values. As such, the students' level of stress is not normally distributed. This can be verified with a frequency histogram, generated with `hist(dataset$stress)`, which is heavily skewed to the left
+
+```{r}
+hist(dataset$stress, main="Frequency Histogram of Stress Values", xlab="Stress Value")
+```
+
+and is therefore not derived from normally distributed data.
+
+### Part C
+
+Let $\mu$ represent the stress population mean of the student body prior to COVID, and $\bar{X}$ represent the mean of observed stress values of the BIOL251 class during COVID.
+
+The null hypothesis is that the stress mean during COVID were less than or equal to the stress population mean prior to the outbreak (i.e. \$H\_{0}: \mu \geq \bar{X} \$), the null boundary is $\hat{H_0}:\mu=\bar{X}$, and the alternate hypothesis is that stress mean during COVID is greater than that observed prior to COVID $(H_{1}:\mu\lt\bar{X})$. The alternate hypothesis being true would indicate that stress levels increased during COVID.
+
+The Pre-COVID sample mean can be treated as a theoretical population mean. From this fact, the test statistic formula to be use should be
+
+$$T=\frac{\bar{X}-\mu}{s/\sqrt{n}},$$
+
+where $T$ is the test statistic, $s$ is the standard deviation of the sample population, and $n$ is the number of data points in the sample population.
+
+```{r}
+# Establish key values
+popmean <- 2.08 # Provided in the question
+stress.mean <- mean(dataset$stress, na.rm=TRUE)
+stress.sd <- sd(dataset$stress, na.rm=TRUE)
+stress.count <- sum(dataset$stress < 10) # As a score of 10 on a scale of 0-5 is impossible, this is a (probably inefficient, but successful) way of determining the number of items. See the code of Q4 Part A for an explanation of this logic.
+
+# Calculate test statistic and print it to console
+tstat=(stress.mean-popmean)/(stress.sd/sqrt(stress.count))
+tstat
+```
+
+The test statistic is 1.543549348. As no confidence interval was specified in the question, an assumed 95% confidence interval is used for further calculations. Given this,
+
+```{r}
+## Enter the Confidence Interval as a decimal
+CI = 0.95
+# Calculate the degrees of freedom, standard error, t*, and margin of error
+## Degrees of Freedom = count - 1
+df = stress.count-1
+
+## Standard Error = sd/sqrt(n)
+SE=stress.sd/sqrt(stress.count)
+
+## T-Star needs to be computed using the Quantile T Function
+tstar=qt((1-CI)/2,df,lower.tail=FALSE);
+## Margin of Error = T-star * Standard Error
+MOE = tstar*SE
+# Calculate the CI
+## Limits of the CI are the mean ± the margin of error
+LowerLimit_CI = stress.mean - MOE
+UpperLimit_CI = stress.mean + MOE
+
+# Print the calculated values to Console
+LowerLimit_CI
+UpperLimit_CI
+```
+
+the limits of the null distribution are 2.044989896 and 2.361178328. The T-test will be one-tailed.
+
+```{r}
+pvalue <- pt(-abs(tstat),df= stress.count-1)
+pvalue
+```
+
+The P-value for the test statistic is 0.06283890612. This means that there is an approximately 6.3% chance that this outcome would be observed given that the null hypothesis is true, and that the dataset only provides weak evidence against the null hypothesis. As such, the null hypothesis cannot be rejected as there is insufficient evidence.
+
+**There is not enough evidence to conclude whether or not the stress levels of Randwick University Students increased during COVID.**
+
+### Part D
+
+The calculations in Part C assume that the data which produced $\mu$ had the same standard deviation and count as the data which produced $\bar{X}$. Additionally, it was assumed that the data which produced each of the means was independent, and that the data which produced $\mu$ and $\bar{X}$ satisfied the Central Limit Theorem (i.e. was normally distributed).
+
+The assumptions regarding standard deviation and count are likely false, as $\mu$ was calculated from a "university-wide" sample, while $\bar{X}$ only considered members of the BIOL251 class. It is possible that there was a bias present in the biology class (for example, a heavier course load compared to the average university student) which could have produced a smaller standard deviation. In other words, the fact that certain factors were effectively "more random" for $\mu$ and $\bar{X}$ means that there was a potential for the standard deviation to be different.
+
+The independence of the two datasets is satisfactory, as the data was taken over 2 separate years and from 2 different populations.
+
+The central limit theorem is satisfied by the COVID dataset, and can be assumed satisfied for the pre-COVID data.
