@@ -1,0 +1,107 @@
+<svg width="960" height="300" viewBox="0 0 960 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f7f7fa" />
+    </linearGradient>
+    
+    <!-- Arrow Marker Definition -->
+    <marker
+       id="arrow"
+       markerWidth="10"
+       markerHeight="10"
+       refX="6"
+       refY="3"
+       orient="auto"
+       markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#555" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="100%" height="100%" fill="url(#bgGrad)" />
+
+  <!--
+    Layout:
+    Each phase is drawn as a "step" moving diagonally up and to the right.
+    Rectangle positions (x, y) progress in steps; each arrow connects the center-right of one step to the center-left of the next.
+  -->
+
+  <!-- Phase 1: Preparation -->
+  <rect x="30" y="140" width="120" height="60" fill="#FFD9DA" stroke="#555" rx="5" ry="5" />
+  <text x="90" y="155" text-anchor="middle" fill="#000" font-size="12">
+    <tspan x="90" font-weight="bold">Preparation</tspan>
+    <tspan x="90" dy="1.2em">Develop policies, gather tools</tspan>
+  </text>
+
+  <!-- Arrow from Phase 1 to Phase 2 -->
+  <line
+    x1="150" y1="170"
+    x2="180"  y2="150"
+    stroke="#555" stroke-width="2"
+    marker-end="url(#arrow)" />
+
+  <!-- Phase 2: Identification -->
+  <rect x="180" y="110" width="120" height="60" fill="#FFEB99" stroke="#555" rx="5" ry="5" />
+  <text x="240" y="125" text-anchor="middle" fill="#000" font-size="12">
+    <tspan x="240" font-weight="bold">Identification</tspan>
+    <tspan x="240" dy="1.2em">Detect and analyze events</tspan>
+  </text>
+
+  <!-- Arrow from Phase 2 to Phase 3 -->
+  <line
+    x1="300" y1="140"
+    x2="330" y2="120"
+    stroke="#555" stroke-width="2"
+    marker-end="url(#arrow)" />
+
+  <!-- Phase 3: Containment -->
+  <rect x="330" y="80" width="120" height="60" fill="#D9FFD9" stroke="#555" rx="5" ry="5" />
+  <text x="390" y="95" text-anchor="middle" fill="#000" font-size="12">
+    <tspan x="390" font-weight="bold">Containment</tspan>
+    <tspan x="390" dy="1.2em">Isolate and mitigate threats</tspan>
+  </text>
+
+  <!-- Arrow from Phase 3 to Phase 4 -->
+  <line
+    x1="450" y1="110"
+    x2="480" y2="90"
+    stroke="#555" stroke-width="2"
+    marker-end="url(#arrow)" />
+
+  <!-- Phase 4: Eradication -->
+  <rect x="480" y="50" width="120" height="60" fill="#D9FFFB" stroke="#555" rx="5" ry="5" />
+  <text x="540" y="65" text-anchor="middle" fill="#000" font-size="12">
+    <tspan x="540" font-weight="bold">Eradication</tspan>
+    <tspan x="540" dy="1.2em">Remove underlying causes</tspan>
+  </text>
+
+  <!-- Arrow from Phase 4 to Phase 5 -->
+  <line
+    x1="600" y1="80"
+    x2="630" y2="60"
+    stroke="#555" stroke-width="2"
+    marker-end="url(#arrow)" />
+
+  <!-- Phase 5: Recovery -->
+  <rect x="630" y="20" width="120" height="60" fill="#E0D9FF" stroke="#555" rx="5" ry="5" />
+  <text x="690" y="35" text-anchor="middle" fill="#000" font-size="12">
+    <tspan x="690" font-weight="bold">Recovery</tspan>
+    <tspan x="690" dy="1.2em">Restore systems and assets</tspan>
+  </text>
+
+  <!-- Arrow from Phase 5 to Phase 6 -->
+  <line
+    x1="750" y1="50"
+    x2="780" y2="30"
+    stroke="#555" stroke-width="2"
+    marker-end="url(#arrow)" />
+
+  <!-- Phase 6: Lessons Learned -->
+  <rect x="780" y="-10" width="120" height="60" fill="#FFD9ED" stroke="#555" rx="5" ry="5" />
+  <text x="840" y="5" text-anchor="middle" fill="#000" font-size="12">
+    <tspan x="840" font-weight="bold">Lessons Learned</tspan>
+    <tspan x="840" dy="1.2em">Review & improve responses</tspan>
+  </text>
+</svg>
